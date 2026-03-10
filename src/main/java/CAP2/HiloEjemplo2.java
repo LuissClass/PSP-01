@@ -7,7 +7,7 @@ public class HiloEjemplo2 extends Thread{
                 "Dentro de un hilo: " + Thread.currentThread().getName() +
                 "\n\tPrioridad: " + Thread.currentThread().getPriority() +
                 "\n\tId: " + Thread.currentThread().getId() +
-                "\n\tHilos activos con size: " + Thread.getAllStackTraces().keySet().size()
+                "\n\tHilos activos HILO: " + Thread.getAllStackTraces().keySet().size()
         );
     }
 
@@ -15,10 +15,11 @@ public class HiloEjemplo2 extends Thread{
         Thread.currentThread().setName("Principal");
         System.out.println(Thread.currentThread().getName());
         System.out.println(Thread.currentThread());
+
         System.out.println("---");
 
         HiloEjemplo2 h = null;
-        int numHilos = 10;
+        int numHilos = 3;
 
         for (int i = 0; i < numHilos; i++) {
             h = new HiloEjemplo2();
@@ -30,7 +31,7 @@ public class HiloEjemplo2 extends Thread{
             );
 
             System.out.println(">>> " + numHilos + " HILOS CREADOS");
-            System.out.println("Hilos activos con count: " + Thread.activeCount());
+            System.out.println("Hilos activos BUCLE: " + Thread.activeCount());
             System.out.println();
         }
     }
