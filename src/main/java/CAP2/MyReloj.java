@@ -2,7 +2,11 @@ package CAP2;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalTime;
+
+// Muestra la hora actual enb tres ventanas distintas actualizandose en tiempo real
 
 public class MyReloj extends JPanel implements Runnable {
     private Thread hilo = null;
@@ -31,8 +35,10 @@ public class MyReloj extends JPanel implements Runnable {
     }
 
     public void stop() {
+        running = false;
+
         if (hilo != null) {
-            hilo = null;
+                hilo = null;
         }
     }
 
@@ -49,53 +55,24 @@ public class MyReloj extends JPanel implements Runnable {
     }
 
     public static void main(String[] args) {
-        // Hilo 1
-        JFrame ventana = new JFrame("Reloj");
-        MyReloj reloj = new MyReloj();
+        // Creacion hilos
+        for (int i = 0; i < 3; i++) {
+            JFrame ventana = new JFrame("Reloj-3");
+            MyReloj reloj = new MyReloj();
 
-        ventana.add(reloj);
-        ventana.setSize(300, 200);
-        ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        ventana.setVisible(true);
+            ventana.add(reloj);
+            ventana.setSize(300, 200);
+            ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            ventana.setVisible(true);
 
-        Thread hilo = new Thread(reloj);
+            reloj.start();
 
-        hilo.start();
-
-        // Hilo 2
-        JFrame ventana2 = new JFrame("Reloj-2");
-        MyReloj reloj2 = new MyReloj();
-
-        ventana2.add(reloj2);
-        ventana2.setSize(400, 200);
-        ventana2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        ventana2.setVisible(true);
-
-        Thread hilo2 = new Thread(reloj2);
-        hilo2.start();
-
-        // Hilo 3
-        JFrame ventana3 = new JFrame("Reloj-3");
-        MyReloj reloj3 = new MyReloj();
-
-        ventana3.add(reloj3);
-        ventana3.setSize(300, 300);
-        ventana3.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        ventana3.setVisible(true);
-
-        reloj3.start();
-
-        // TODO FINALIZAR TODOS LOS HILOS CREADOS AL CERRAR LAS VENTANAS
-        if (!ventana.isDisplayable()) {
-            reloj.stop();
-        }
-
-        if (!ventana2.isDisplayable()) {
-            reloj2.stop();
-        }
-
-        if (!ventana3.isDisplayable()) {
-            reloj3.stop();
+            ventana.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    reloj.stop();
+                }
+            });
         }
     }
 }

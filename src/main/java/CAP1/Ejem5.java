@@ -13,10 +13,12 @@ public class Ejem5 {
 
         Process p = pb.start();
 
+        // Enviar los datos al programa en "p"
         OutputStream os = p.getOutputStream();
         os.write("HOOLAA MAANUUEEL!\n".getBytes());
         os.flush();
 
+        // Leer el resultado de "p"
         InputStream is = p.getInputStream();
         int c;
         while((c = is.read()) != -1) {

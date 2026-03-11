@@ -27,7 +27,7 @@ public class HiloEjemplo2 extends Thread{
             h.setPriority(i+1);
             h.start();
             System.out.println(
-                    "Informacion del " + h.getName() + ": " + h
+                    "Informacion del hilo " + h.getName() + ": " + h
             );
 
             System.out.println(">>> " + numHilos + " HILOS CREADOS");

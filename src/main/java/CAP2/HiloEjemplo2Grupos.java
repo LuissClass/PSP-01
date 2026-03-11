@@ -7,8 +7,6 @@ public class HiloEjemplo2Grupos extends Thread{
                 "Informacion del hilo: " + Thread.currentThread()
         );
 
-        for (int i = 0; i < 1000; i++) i++;
-
         System.out.println(
                 Thread.currentThread().getName() + " Finalizando ejecucion."
         );
