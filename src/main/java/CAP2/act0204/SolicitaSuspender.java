@@ -1,7 +1,5 @@
 package CAP2.act0204;
 
-import java.io.BufferedReader;
-import java.io.FileDescriptor;
 import java.util.Scanner;
 
 import static java.lang.System.in;
