@@ -2,60 +2,82 @@ package CAP2.actFinal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
-public class Player extends Thread {
-    private int numberTry;
-    private List<Integer> hints;
+import static java.lang.Thread.sleep;
+
+public class Player {
+    private final List<Integer> hints;
     private volatile boolean skipTurn = false;
-    private volatile boolean inPause = true;
+    private final String name;
+    private volatile boolean isGamesActive;
+    private final int maxNum;
+    private boolean numExist;
+    private final BlockingQueue<Integer> numberTry = new SynchronousQueue<>();
 
-    @Override
+
     public void run() {
-        while (!isInterrupted()) {
+        while (isGamesActive) {
             try {
                 sleep(500);
             } catch (InterruptedException e) {
-                interrupt();
+                isGamesActive = false;
             }
 
-            while ((inPause || skipTurn) && !isInterrupted()) { // isInterrupted() ES NECESARIO PORQUE CUANDO EL HILO "DESPIERTE" EL WHILE SIGUE EJECUTANDOSE
+            while ((skipTurn) && isGamesActive) {
                 waitTurn();
             }
-
-            if (!isInterrupted()) {
-                System.out.println("E M P A N A D A S " + getName());
+            //&& !numExist
+            if (isGamesActive) { // TODO QUITAR TANTO isGamesActive
+                createNumToTry();
+                numExist = true;
             }
         }
 
-        System.out.println(" EL JUGADOR " + getName() + " HA MUERTO");
+        //System.out.println(" EL JUGADOR " + getName() + " HA MUERTO");
     }
 
-    public Player(String name) {
-        super(name);
+    public Player(String name, int maxNum) {
+        this.name = name;
+        this.maxNum = maxNum;
         hints = new ArrayList<>();
+        isGamesActive = true;
     }
 
     private synchronized void waitTurn() {
         try {
+            numExist = false;
             wait();
         } catch (InterruptedException e) {
-            interrupt();
+            isGamesActive = false;
         }
     }
 
-    public synchronized void unlock() {
-        notifyAll();
+
+    public synchronized void unlockTurn() {
+        notify(); // "DESPIERTA" A UN HILOS CON EL MONITOR DE LA CLASE Player (COMO SOLO HAY UNO "DORMIDO", DESPIERTA A ESE)
     }
 
-    public void createNumToTry(int max) {
-        numberTry = (int) (Math.random() * max);
+    public void createNumToTry() { // TODO HAY QUE USAR LAS "PISTAS"
+        try {
+            int n = (int) (Math.random() * maxNum);
+            numberTry.put(n);
+        } catch (InterruptedException e) {
+            System.out.println("💀 ERROR AL CREAR numberTry");
+        }
     }
 
     public void receiveHint(int hint) {
         hints.add(hint);
     }
 
-    public int getNumberTry() {
+
+    public String getName() {
+        return name;
+    }
+
+    public BlockingQueue<Integer> getNumberTry() {
         return numberTry;
     }
 
@@ -67,11 +89,15 @@ public class Player extends Thread {
         this.skipTurn = skipTurn;
     }
 
-    public boolean isInPause() {
-        return inPause;
+    public void setGamesActive(boolean gamesActive) {
+        isGamesActive = gamesActive;
     }
 
-    public void setInPause(boolean inPause) {
-        this.inPause = inPause;
+    public boolean isNumExist() {
+        return numExist;
+    }
+
+    public void setNumExist(boolean numExist) {
+        this.numExist = numExist;
     }
 }
