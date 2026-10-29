@@ -10,8 +10,12 @@ public class Carrera {
     }
 
     public static void main(String[] args) {
-        Carrera carrera = new Carrera(Integer.parseInt(args[0]));
+        if (args.length == 0) {
+            System.out.println("Error: Falta el argumento DISTANCIA de la carrera");
+            return;
+        }
 
+        Carrera carrera = new Carrera(Integer.parseInt(args[0]));
         new Thread(new Caracol(carrera, "Hamburguesa", "🍔")).start();
         new Thread(new Caracol(carrera, "Gato", "😹")).start();
         new Thread(new Caracol(carrera, "Pez", "️🐟")).start();
@@ -19,11 +23,11 @@ public class Carrera {
         new Thread(new Caracol(carrera, "Perro", "🐶")).start();
     }
 
-    public synchronized boolean declararGanador(String nombre) {
+    public synchronized boolean declararGanador(String nombre, String emogi) {
         if (!finalizada) {
             finalizada = true;
             System.out.println("\n=========CLASIFICACION=========");
-            System.out.println("¡El ganador es " + nombre + "!");
+            System.out.println("¡El ganador es " + nombre + " " + emogi  + "!");
             return true;
         }
         return false;

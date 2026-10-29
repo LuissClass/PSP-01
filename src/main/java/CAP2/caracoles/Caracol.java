@@ -26,11 +26,11 @@ public class Caracol implements Runnable{
             dibujarPista();
 
             if (distanciaRecorrida >= carrera.getDistancia()) {
-                carrera.declararGanador(name);
+                carrera.declararGanador(name, emogi);
             }
 
             try {
-                Thread.sleep(110);
+                Thread.sleep(400);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
