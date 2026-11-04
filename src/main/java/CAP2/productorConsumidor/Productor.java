@@ -12,7 +12,11 @@ public class Productor implements Runnable {
     @Override
     public void run() {
         while (true) {
-            s.producir(name);
+            try {
+                s.producir(name);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
             try {
                 Thread.sleep(1500);

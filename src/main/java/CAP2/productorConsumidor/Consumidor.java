@@ -16,10 +16,14 @@ public class Consumidor implements Runnable{
     @Override
     public void run() {
         while (true) {
-            s.consumir(name);
+            try {
+                s.consumir(name);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
             try {
-                Thread.sleep(500);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return;
