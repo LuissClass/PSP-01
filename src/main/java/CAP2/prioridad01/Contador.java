@@ -27,17 +27,14 @@ class Contador implements Runnable {
         Thread hilo2 = new Thread(new Contador("HILO 2"));
         Thread hilo3 = new Thread(new Contador("HILO 3"));
 
-        // Asignamos prioridades
         hilo1.setPriority(1);
         hilo2.setPriority(5);
         hilo3.setPriority(10);
 
-        // Iniciamos los hilos
         hilo1.start();
         hilo2.start();
         hilo3.start();
 
-        // Esperamos a que terminen
         hilo1.join();
         hilo2.join();
         hilo3.join();
