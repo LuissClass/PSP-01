@@ -14,16 +14,13 @@ public class Camarero implements Runnable{
         while (true) {
             try {
                 s.ponerComanda(name);
-
-                if () {
-
-                }
+                s.llevarPlato(name);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return;
